@@ -22,7 +22,7 @@ public class Account {
     private Float balance=0F;
 
     @OneToOne
-    private Client client;;
+    private Client client;
 
 
 }

@@ -16,7 +16,9 @@ import java.util.List;
 public class Client {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+    private String firstName;
+    private String lastName;
+    private String cin;
 
     @OneToOne(mappedBy = "client")
     private Account account;
