@@ -29,12 +29,12 @@ public class AccountService {
         return account.getBalance() >= amount;
     }
 
-    public void debitBalance(Long accountId, Float amount) {
+    public void debitBalance(Long accountId, Double amount) {
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
         if (account.getBalance() < amount) {
             throw new RuntimeException("Insufficient balance");
         }
-        account.setBalance(account.getBalance() - amount);
+        account.setBalance((float) (account.getBalance() - amount));
         accountRepository.save(account);
     }
 }

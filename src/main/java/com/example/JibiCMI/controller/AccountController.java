@@ -19,9 +19,9 @@ public class AccountController {
 
 
 
-    @GetMapping("/debitBalance")
-    public void debitBalance(@RequestParam Long accountId, @RequestParam Float amount) {
-        accountService.debitBalance(accountId, amount);
-    }
+//    @GetMapping("/debitBalance")
+//    public void debitBalance(@RequestParam Long accountId, @RequestParam Float amount) {
+//        accountService.debitBalance(accountId, amount);
+//    }
 }
 
