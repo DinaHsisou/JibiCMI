@@ -17,10 +17,7 @@ public class AccountController {
         return accountService.createAccount(id, initialBalance);
     }
 
-    @PostMapping("/checkBalance")
-    public boolean checkBalance(@RequestParam Long accountId, @RequestParam Float amount) {
-        return accountService.checkBalance(accountId, amount);
-    }
+
 
     @GetMapping("/debitBalance")
     public void debitBalance(@RequestParam Long accountId, @RequestParam Float amount) {
