@@ -15,7 +15,7 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-     private ClientRepository clientRepository ;
+    private ClientRepository clientRepository ;
     public Account createAccount(Long id, Float initialBalance) {
         Client client = clientRepository.findById(id).orElseThrow(() -> new RuntimeException("Client not found"));
         Account account = new Account();
@@ -37,4 +37,11 @@ public class AccountService {
         account.setBalance((float) (account.getBalance() - amount));
         accountRepository.save(account);
     }
+
+    public void addtoBalance(Long accountId, Double amount) {
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
+        account.setBalance((float) (account.getBalance() + amount));
+        accountRepository.save(account);
+    }
+
 }

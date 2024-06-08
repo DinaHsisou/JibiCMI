@@ -23,6 +23,8 @@ public class CmiController {
     @Autowired
     private ClientRepository clientRepository;
 
+    private boolean test = true;
+
     @PostMapping("/verify")
     public CmiResponse verifyClient(@RequestBody Client client) {
         System.out.println(client);
@@ -41,6 +43,20 @@ public class CmiController {
         }
         return isBalanceSufficient;
     }
+
+    @PostMapping("/maketransfert")
+    public boolean maketransfer(@RequestBody TransferRequest transferRequest) {
+        Account sender = clientRepository.findById(transferRequest.getSender()).orElseThrow().getAccount();
+        Account reciever = clientRepository.findById(transferRequest.getReciever()).orElseThrow().getAccount();
+
+        Boolean isBalanceSufficient = accountService.checkBalance(sender.getId(), transferRequest.getAmount().floatValue());
+        if(isBalanceSufficient) {
+            System.out.println("teeeest");
+            accountService.debitBalance(sender.getId(), transferRequest.getAmount());
+            accountService.addtoBalance(reciever.getId(), transferRequest.getAmount());
+        }
+        return isBalanceSufficient;
+    }
 }
 
 @Data
@@ -48,5 +64,14 @@ public class CmiController {
 @AllArgsConstructor
 class BalanceRequest {
     private Long userId;
+    private Double amount;
+}
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+class TransferRequest {
+    private Long sender;
+    private Long reciever;
     private Double amount;
 }
