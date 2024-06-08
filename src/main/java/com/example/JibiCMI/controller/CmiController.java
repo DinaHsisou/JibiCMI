@@ -39,6 +39,8 @@ public class CmiController {
         if(isBalanceSufficient) {
             accountService.debitBalance(account.getId(), balanceRequest.getAmount());
         }
+
+
         return isBalanceSufficient;
     }
 }
