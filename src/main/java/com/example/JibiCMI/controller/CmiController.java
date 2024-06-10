@@ -34,8 +34,16 @@ public class CmiController {
         return response;
     }
 
+    @PostMapping("/getbalance")
+    public Float getBalance(@RequestBody Long clientId) {
+        System.out.println(clientId);
+        Account account = clientRepository.findById(clientId).orElseThrow().getAccount();
+        return accountService.getbalance(account.getId());
+    }
+
     @PostMapping("/checkBalance")
     public boolean checkBalance(@RequestBody BalanceRequest balanceRequest) {
+        System.out.println("teeeeeeeeeest");
         Account account = clientRepository.findById(balanceRequest.getUserId()).orElseThrow().getAccount();
         Boolean isBalanceSufficient = accountService.checkBalance(account.getId(), balanceRequest.getAmount().floatValue());
         if(isBalanceSufficient) {

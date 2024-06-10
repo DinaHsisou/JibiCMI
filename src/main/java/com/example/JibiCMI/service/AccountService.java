@@ -44,4 +44,10 @@ public class AccountService {
         accountRepository.save(account);
     }
 
+    public Float getbalance(Long accountId){
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
+        return account.getBalance();
+    }
+
+
 }
