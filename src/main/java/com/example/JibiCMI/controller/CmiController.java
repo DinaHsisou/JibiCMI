@@ -1,16 +1,24 @@
 package com.example.JibiCMI.controller;
 
+import com.example.JibiCMI.dto.CreanceFormDTO;
 import com.example.JibiCMI.model.Account;
 import com.example.JibiCMI.model.Client;
 import com.example.JibiCMI.model.CmiResponse;
+import com.example.JibiCMI.model.Facture;
 import com.example.JibiCMI.repository.ClientRepository;
 import com.example.JibiCMI.service.AccountService;
 import com.example.JibiCMI.service.ClientService;
+import com.example.JibiCMI.service.CreanceService;
+import com.example.JibiCMI.service.FactureService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cmi")
@@ -22,6 +30,12 @@ public class CmiController {
     private AccountService accountService;
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    private CreanceService creanceService;
+    @Autowired
+    private FactureService factureService;
+
+
 
     private boolean test = true;
 
@@ -65,7 +79,28 @@ public class CmiController {
         }
         return isBalanceSufficient;
     }
+    @GetMapping("/getforms")
+    public ResponseEntity<CreanceFormDTO> getCreanceFormDetails(@RequestParam(value = "id", required = true) Long id) {
+        CreanceFormDTO creanceFormDTO = creanceService.getCreanceFormDetails(id);
+        if (creanceFormDTO != null) {
+            return ResponseEntity.ok(creanceFormDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/getimpayes")
+    public ResponseEntity<List<Facture>> getImpayeFacturesByRefAndCreancier(@RequestParam(value = "ref") String ref, @RequestParam(value = "id") Long creanceId) {
+        List<Facture> factures = factureService.getImpayeFacturesByRefAndCreance(ref, creanceId);
+        System.out.println(factures);
+        if (factures.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(factures, HttpStatus.OK);
+    }
+
 }
+
 
 @Data
 @NoArgsConstructor
